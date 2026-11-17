@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مراجعة المتسعات - فيزياء السادس العلمي</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600;800;900&display=swap');
+
+        :root {
+            --bg: #f4f6f8;
+            --card: #ffffff;
+            --primary: #1e3a8a; /* أزرق داكن */
+            --accent: #2563eb;
+            --success: #059669;
+            --danger: #dc2626;
+            --text: #000000; /* أسود واضح جداً */
+            --border: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            padding-bottom: 40px;
+        }
+
+        /* الترويسة */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom: 4px solid #172554;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 { font-size: 1.3rem; font-weight: 900; margin-bottom: 5px; }
+        header p { font-size: 0.9rem; opacity: 0.9; }
+        
+        /* التاتيل (الحقوق) */
+        .copyright-badge {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 18px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: 800;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fbbf24; /* لون ذهبي */
+            letter-spacing: 0.5px;
+        }
+
+        .container { max-width: 650px; margin: 0 auto; padding: 0 15px; }
+
+        /* القائمة الرئيسية (3 أقسام) */
+        .main-menu {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        .main-btn {
+            background: var(--card);
+            color: var(--text);
+            border: 2px solid var(--border);
+            padding: 15px 5px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .main-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.3);
+        }
+
+        /* إخفاء الأقسام */
+        .section { display: none; animation: fadeIn 0.3s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* القائمة الفرعية (داخل الكلاميات) */
+        .sub-menu {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+        .sub-btn {
+            flex: 1;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            white-space: nowrap;
+            text-align: center;
+        }
+        .sub-btn.active { background: #e0e7ff; border-color: var(--accent); color: var(--accent); }
+
+        /* البطاقات */
+        .card {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        h3 { color: var(--primary); font-size: 1.15rem; margin-bottom: 15px; border-bottom: 2px solid var(--border); padding-bottom: 10px; font-weight: 800; }
+
+        /* التعاريف */
+        .def-item { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed var(--border); }
+        .def-item:last-child { border: none; margin: 0; padding: 0; }
+        .def-term { font-weight: 900; color: var(--accent); font-size: 1.05rem; margin-bottom: 5px; }
+        .def-desc { font-size: 1rem; font-weight: 600; }
+
+        /* التعاليل */
+        .reason-item { margin-bottom: 15px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 15px; border-right: 5px solid var(--primary); }
+        .reason-q { font-weight: 800; font-size: 1rem; margin-bottom: 10px; }
+        .reason-a { display: none; font-weight: 600; color: #047857; background: #ecfdf5; padding: 10px; border-radius: 6px; border: 1px solid #10b981; font-size: 0.95rem; }
+        .btn-show { background: var(--bg); border: 2px solid var(--border); padding: 6px 15px; border-radius: 6px; font-weight: 800; font-family: 'Cairo'; cursor: pointer; transition: 0.2s; }
+        .btn-show:active { background: var(--border); }
+
+        /* الفراغات */
+        .blank-item { margin-bottom: 20px; font-weight: 700; font-size: 1rem; line-height: 2.2; }
+        .blank-input {
+            border: none;
+            border-bottom: 2px solid var(--accent);
+            background: #f0f9ff;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-align: center;
+            width: 110px;
+            outline: none;
+            padding: 2px 5px;
+            border-radius: 4px 4px 0 0;
+        }
+        .blank-input.correct { border-color: var(--success); color: var(--success); background: #ecfdf5; }
+        .blank-input.wrong { border-color: var(--danger); color: var(--danger); background: #fef2f2; }
+
+        /* المسائل */
+        .problem-item { margin-bottom: 25px; border-bottom: 2px dashed var(--border); padding-bottom: 20px; }
+        .problem-item:last-child { border: none; padding: 0; }
+        .problem-title { font-weight: 900; font-size: 1.1rem; color: var(--primary); margin-bottom: 10px; background: #e0e7ff; display: inline-block; padding: 5px 15px; border-radius: 20px; }
+        .problem-q { font-weight: 700; margin-bottom: 15px; font-size: 1rem; }
+        .problem-a { display: none; background: #f0fdf4; padding: 15px; border-radius: 8px; border: 2px solid var(--success); font-weight: 600; font-size: 0.95rem; line-height: 1.8; }
+        .solution-step { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #bbf7d0; }
+
+        /* الامتحان */
+        .question { margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .q-text { font-weight: 800; margin-bottom: 12px; font-size: 1rem; }
+        .option { 
+            background: #f8fafc; border: 2px solid var(--border); padding: 12px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; font-weight: 700; transition: 0.2s; font-size: 0.95rem;
+        }
+        .option:active { transform: scale(0.98); }
+        .option.selected { border-color: var(--accent); background: #eff6ff; }
+        .option.correct { border-color: var(--success); background: #ecfdf5; color: var(--success); }
+        .option.wrong { border-color: var(--danger); background: #fef2f2; color: var(--danger); }
+
+        .btn-main { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-family: 'Cairo'; font-size: 1.1rem; font-weight: 800; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn-main:active { background: #172554; }
+        
+        .result-box { display: none; text-align: center; margin-top: 20px; padding: 20px; background: #fff; border: 2px solid var(--primary); border-radius: 12px; }
+        .score-circle { width: 100px; height: 100px; border-radius: 50%; border: 5px solid var(--primary); display: flex; justify-content: center; align-items: center; font-size: 1.8rem; font-weight: 900; margin: 0 auto 15px auto; color: var(--primary); }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>مراجعة الفصل الأول: المتسعات</h1>
+        <p>الفيزياء - السادس العلمي</p>
+        
+        <!-- الحقوق -->
+        <div class="copyright-badge">
+            إعداد وتصميم: جعفر محمد © 2024
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- القائمة الرئيسية -->
+        <div class="main-menu">
+            <div class="main-btn active" onclick="switchMain('section-theory', this)">📖 الكلاميات</div>
+            <div class="main-btn" onclick="switchMain('section-problems', this)">🧮 المسائل</div>
+            <div class="main-btn" onclick="switchMain('section-exam', this)">🎯 الامتحان</div>
+        </div>
+
+        <!-- ================= قسم الكلاميات ================= -->
+        <div id="section-theory" class="section active">
+            <div class="sub-menu">
+                <div class="sub-btn active" onclick="switchSub('theory-defs', this)">التعاريف</div>
+                <div class="sub-btn" onclick="switchSub('theory-reasons', this)">التعاليل</div>
+                <div class="sub-btn" onclick="switchSub('theory-blanks', this)">الفراغات</div>
+            </div>
+
+            <!-- التعاريف -->
+            <div id="theory-defs" class="card" style="display: block;">
+                <h3>التعاريف المهمة</h3>
+                <div id="defs-container"></div>
+            </div>
+
+            <!-- التعاليل -->
+            <div id="theory-reasons" class="card" style="display: none;">
+                <h3>علل ما يأتي (تنوع في الصيغ)</h3>
+                <div id="reasons-container"></div>
+            </div>
+
+            <!-- الفراغات -->
+            <div id="theory-blanks" class="card" style="display: none;">
+                <h3>أكمل الفراغات</h3>
+                <div id="blanks-container"></div>
+            </div>
+        </div>
+
+        <!-- ================= قسم المسائل ================= -->
+        <div id="section-problems" class="section">
+            <div class="card">
+                <h3>المسائل الشاملة (3 مسائل أساسية)</h3>
+                <div id="problems-container"></div>
+            </div>
+        </div>
+
+        <!-- ================= قسم الامتحان ================= -->
+        <div id="section-exam" class="section">
+            <div class="card">
+                <h3>الامتحان الشامل (60% كلاميات / 40% مسائل)</h3>
+                <div id="exam-container"></div>
+                <button class="btn-main" onclick="submitExam()">إظهار النتيجة</button>
+                
+                <div id="exam-result" class="result-box">
+                    <div class="score-circle" id="score-display">0/15</div>
+                    <p id="result-msg" style="font-weight: 800; font-size: 1.1rem;"></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================== البيانات الموسعة والمطورة ==================
+
+        const definitionsData = [
+            { term: "المتسعة (Capacitor):", desc: "جهاز يستعمل لتخزين الشحنات الكهربائية والطاقة الكهربائية، يتكون من زوج من الصفائح الموصلة يفصل بينهما عازل (هواء، فراغ، أو مادة عازلة)." },
+            { term: "السعة (Capacitance):", desc: "نسبة الشحنة (Q) المختزنة في أي من صفيحتي المتسعة إلى مقدار فرق الجهد (ΔV) بين الصفيحتين." },
+            { term: "العازل الكهربائي (Dielectric):", desc: "مادة غير موصلة للكهربائية (مثل الزجاج، البلاستيك، الورق المشمع)، تعمل على تقليل مقدار المجال الكهربائي الموضوع فيه." },
+            { term: "السعة المكافئة (Equivalent Capacitance):", desc: "متسعة واحدة تحل محل مجموعة من المتسعات، وتخزن نفس الشحنة وتحتاج نفس فرق الجهد للمجموعة." },
+            { term: "ثابت العزل الكهربائي (k):", desc: "النسبة بين سعة المتسعة بوجود المادة العازلة إلى سعتها بوجود الهواء أو الفراغ بين صفيحتيها." },
+            { term: "قوة العزل الكهربائي:", desc: "أقصى مقدار لمجال كهربائي يمكن أن تتحمله المادة العازلة قبل حدوث الانهيار الكهربائي (تلف المادة)." },
+            { term: "الدايبول (Dipole):", desc: "جزيئة ثنائية القطب، يكون فيها التباعد بين مركزي الشحنة الموجبة والسالبة ثابتاً (مثل جزيئات الماء)." },
+            { term: "المجال الكهربائي المنتظم:", desc: "مجال تكون فيه خطوط المجال متوازية ومتباعدة بمسافات متساوية، ويحدث بين صفيحتين متوازيتين مشحونتين إذا كانت المسافة بينهما صغيرة جداً." }
+        ];
+
+        const reasonsData = [
+            { q: "علل: لا يستعمل الموصل المنفرد في تخزين الشحنات الكهربائية؟", a: "لأنه عند زيادة الشحنات عليه يزداد فرق الجهد، وقد يصل إلى حدوث التفريغ الكهربائي خلال الهواء المحيط به، لذا نادراً ما يستعمل." },
+            { q: "علل: يقل المجال الكهربائي بين صفيحتي المتسعة عند إدخال مادة عازلة؟", a: "لأن العازل يتولد داخله مجال كهربائي معاكس للمجال الخارجي (بسبب اصطفاف الدايبولات)، مما يقلل من مقدار المجال المحصل بين الصفيحتين." },
+            { q: "علل: السعة المكافئة في ربط التوالي تكون أصغر من أصغر متسعة؟", a: "لأن ربط التوالي يزيد من البعد الفعال بين الصفيحتين، والسعة تتناسب عكسياً مع البعد (C ∝ 1/d)." },
+            { q: "علل: السعة المكافئة في ربط التوازي تكون أكبر من أكبر متسعة؟", a: "لأن ربط التوازي يزيد من المساحة السطحية الفعالة للصفيحتين، والسعة تتناسب طردياً مع المساحة (C ∝ A)." },
+            { q: "علل: المتسعة المشحونة المفصولة عن البطارية تعتبر خطرة؟", a: "لأنها تحتفظ بالشحنة والطاقة لفترة طويلة، وقد تفرغها في جسم الإنسان إذا لُمست مباشرة (تسبب صدمة كهربائية)." },
+            { q: "علل: تتلف المتسعة إذا زاد فرق الجهد المسلط عليها عن قوة عزلها؟", a: "لأن المجال الكهربائي سيزداد ويتجاوز قوة العزل للمادة العازلة، مما يسبب شرارة كهربائية (انهيار كهربائي) تؤدي إلى تلف المتسعة." },
+            { q: "علل: تستخدم المتسعة في لوحة مفاتيح الحاسوب؟", a: "لأن الضغط على المفتاح يقلل البعد بين صفيحتي المتسعة، فتزداد سعتها، وهذا التغير في السعة يجعل الدوائر الإلكترونية تتعرف على المفتاح الذي تم ضغطه." },
+            { q: "علل: تستخدم المتسعة في فلاش آلة التصوير؟", a: "لأنها قادرة على تخزين مقادير كبيرة من الطاقة الكهربائية، وتفريغها في وقت قصير جداً، مما ينتج وميضاً ساطعاً." }
+        ];
+
+        const blanksData = [
+            { q: "المتسعة هي جهاز يستعمل لتخزين الشحنات الكهربائية و ______.", a: "الطاقة الكهربائية" },
+            { q: "تقاس سعة المتسعة في النظام الدولي للوحدات بوحدة ______.", a: "الفاراد" },
+            { q: "العلاقة الرياضية لسعة المتسعة هي ______.", a: "C=Q/ΔV" },
+            { q: "إذا زادت المساحة السطحية المتقابلة للصفيحتين فإن السعة ______.", a: "تزداد" },
+            { q: "إذا زاد البعد بين الصفيحتين فإن السعة ______.", a: "تقل" },
+            { q: "المواد العازلة القطبية مثل الماء النقي تمتلك عزوم كهربائية ثنائية القطب ______.", a: "دائمية" },
+            { q: "في ربط التوالي، السعة المكافئة تكون ______ من أصغر متسعة في المجموعة.", a: "أصغر" },
+            { q: "في ربط التوازي، السعة المكافئة تكون ______ من أكبر متسعة في المجموعة.", a: "أكبر" },
+            { q: "في ربط التوالي، الشحنة المختزنة في كل متسعة تكون ______.", a: "متساوية" },
+            { q: "في ربط التوازي، فرق الجهد بين صفيحتي كل متسعة يكون ______.", a: "ثابت" },
+            { q: "قانون ربط التوالي لمتسعتين هو ______.", a: "1/Ceq = 1/C1 + 1/C2" },
+            { q: "الطاقة المختزنة في المجال الكهربائي للمتسعة تساوي ______.", a: "1/2 C ΔV²" },
+            { q: "تستخدم المتسعة في جهاز ______ لإنعاش القلب.", a: "الدفبريليتور" },
+            { q: "إذا كان ثابت العزل (k) لمادة ما يساوي 2، فهذا يعني أن سعتها ______ مرتين.", a: "تزداد" },
+            { q: "وحدة قياس السعة (البيكو فاراد) تساوي ______ فاراد.", a: "10^-12" }
+        ];
+
+        const problemsData = [
+            {
+                title: "المسألة الأولى: ربط التوالي الشامل",
+                q: "ثلاث متسعات سعاتها (C1=6μF, C2=9μF, C3=18μF) مربوطة على التوالي، وشحنت المجموعة بشحنة كلية مقدارها (300μC). احسب: 1. السعة المكافئة. 2. فرق الجهد الكلي. 3. فرق الجهد على كل متسعة. 4. الشحنة المختزنة في كل متسعة.",
+                a: `
+                    <div class="solution-step"><b>1. السعة المكافئة:</b><br> 1/Ceq = 1/6 + 1/9 + 1/18 = 6/18 = 1/3<br> Ceq = 3μF</div>
+                    <div class="solution-step"><b>2. فرق الجهد الكلي:</b><br> ΔV_total = Q_total / Ceq = 300 / 3 = 100V</div>
+                    <div class="solution-step"><b>3. الشحنة (في التوالي الشحنة ثابتة):</b><br> Q1 = Q2 = Q3 = 300μC</div>
+                    <div class="solution-step"><b>4. فرق الجهد لكل متسعة:</b><br> ΔV1 = Q/C1 = 300/6 = 50V<br> ΔV2 = Q/C2 = 300/9 = 33.3V<br> ΔV3 = Q/C3 = 300/18 = 16.7V</div>
+                `
+            },
+            {
+                title: "المسألة الثانية: ربط التوازي والطاقة",
+                q: "أربع متسعات (4μF, 8μF, 12μF, 6μF) مربوطة على التوازي، وربطت المجموعة ببطارية فرق جهدها (12V). احسب: 1. السعة المكافئة. 2. الشحنة الكلية. 3. الشحنة في كل متسعة. 4. الطاقة الكلية المختزنة في المجموعة.",
+                a: `
+                    <div class="solution-step"><b>1. السعة المكافئة:</b><br> Ceq = 4 + 8 + 12 + 6 = 30μF</div>
+                    <div class="solution-step"><b>2. الشحنة الكلية:</b><br> Q_total = Ceq × ΔV = 30 × 12 = 360μC</div>
+                    <div class="solution-step"><b>3. الشحنة لكل متسعة (الجهد ثابت 12V):</b><br> Q1 = 4×12 = 48μC<br> Q2 = 8×12 = 96μC<br> Q3 = 12×12 = 144μC<br> Q4 = 6×12 = 72μC</div>
+                    <div class="solution-step"><b>4. الطاقة الكلية:</b><br> PE = ½ × Ceq × (ΔV)²<br> PE = ½ × 30×10⁻⁶ × (12)² = 2160×10⁻⁶ J = 2.16 mJ</div>
+                `
+            },
+            {
+                title: "المسألة الثالثة: الربط المختلط (المصباح)",
+                q: "دائرة كهربائية تحتوي على مصباح مقاومته (r=10Ω) ومقاومة (R=20Ω) وبطارية (ΔV=6V) مربوطة على التوالي. ربطت متسعة سعتها (C=5μF) على التوازي مع المصباح. احسب: 1. مقدار الشحنة المختزنة في المتسعة. 2. الطاقة المختزنة في مجالها الكهربائي. 3. ماذا يحدث للشحنة إذا أُدخل عازل ثابت عزله (k=2) في المتسعة؟",
+                a: `
+                    <div class="solution-step"><b>1. حساب التيار وجهد المصباح:</b><br> I = ΔV / (r + R) = 6 / (10 + 20) = 0.2A<br> ΔV_lamp = I × r = 0.2 × 10 = 2V<br> جهد المتسعة = 2V (توازي).</div>
+                    <div class="solution-step"><b>2. الشحنة والطاقة:</b><br> Q = C × ΔV = 5×10⁻⁶ × 2 = 10μC<br> PE = ½ C (ΔV)² = ½ × 5×10⁻⁶ × (2)² = 10×10⁻⁶ J</div>
+                    <div class="solution-step"><b>3. تأثير إدخال العازل:</b><br> بما أن المتسعة متصلة بالبطارية، فالجهد يبقى ثابتاً (2V). السعة تزداد (C_k = kC).<br> إذن الشحنة تزداد لتصبح: Q_new = 2 × 10μC = 20μC.</div>
+                `
+            }
+        ];
+
+        // أسئلة الامتحان (9 كلاميات + 6 مسائل = 15 سؤال)
+        const examData = [
+            // 60% كلاميات
+            { type: 'mcq', q: "1. سعة المتسعة تتناسب ______ مع المساحة السطحية للصفيحتين.", options: ["طردياً", "عكسياً", "لا تتناسب"], a: 0 },
+            { type: 'mcq', q: "2. في ربط التوازي، فرق الجهد بين المتسعات يكون ______.", options: ["متغير", "ثابت", "صفر"], a: 1 },
+            { type: 'mcq', q: "3. وحدة قياس السعة هي ______.", options: ["الفولت", "الكولوم", "الفاراد"], a: 2 },
+            { type: 'mcq', q: "4. إدخال عازل ثابت عزله (k) بين صفيحتي المتسعة يؤدي إلى ______ السعة.", options: ["زيادة", "نقصان", "ثبات"], a: 0 },
+            { type: 'mcq', q: "5. في ربط التوالي، السعة المكافئة تكون ______ من أصغر متسعة.", options: ["أكبر", "أصغر", "تساوي"], a: 1 },
+            { type: 'mcq', q: "6. المادة العازلة تعمل على ______ المجال الكهربائي بين الصفيحتين.", options: ["زيادة", "تقليل", "الحفاظ على"], a: 1 },
+            { type: 'mcq', q: "7. إذا فُصلت المتسعة المشحونة عن البطارية، فإن شحنتها ______.", options: ["تزداد", "تقل", "تبقى ثابتة"], a: 2 },
+            { type: 'mcq', q: "8. الطاقة المختزنة في متسعة سعتها C وجهدها ΔV تعطى بالعلاقة:", options: ["C × ΔV", "1/2 C (ΔV)²", "1/2 Q ΔV²"], a: 1 },
+            { type: 'mcq', q: "9. جهاز يستخدم المتسعة لتوليد صدمة كهربائية لإنعاش القلب هو:", options: ["المسعر", "الدفبريليتور", "المحرك"], a: 1 },
+            
+            // 40% مسائل
+            { type: 'mcq', q: "10. (مسألة) متسعتان (3μF و 6μF) مربوطتان على التوالي. السعة المكافئة هي:", options: ["9μF", "2μF", "4.5μF"], a: 1 },
+            { type: 'mcq', q: "11. (مسألة) متسعتان (3μF و 6μF) مربوطتان على التوازي. السعة المكافئة هي:", options: ["9μF", "2μF", "4.5μF"], a: 0 },
+            { type: 'mcq', q: "12. (مسألة) متسعة سعتها 10μF وجهدها 20V، الشحنة المختزنة فيها:", options: ["200μC", "2μC", "0.5μC"], a: 0 },
+            { type: 'mcq', q: "13. (مسألة) مصباح مقاومته 10Ω يمر به تيار 0.2A، فرق الجهد عليه:", options: ["2V", "20V", "0.02V"], a: 0 },
+            { type: 'mcq', q: "14. (مسألة) متسعة سعتها 5μF وجهدها 10V، الطاقة المختزنة فيها:", options: ["50μJ", "250μJ", "500μJ"], a: 1 },
+            { type: 'mcq', q: "15. (مسألة) ثلاث متسعات متماثلة سعة كل منها C مربوطة على التوالي، السعة المكافئة تساوي:", options: ["3C", "C/3", "C"], a: 1 }
+        ];
+
+        // ================== الوظائف ==================
+
+        function switchMain(id, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.main-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            btn.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function switchSub(id, btn) {
+            document.querySelectorAll('#section-theory .card').forEach(c => c.style.display = 'none');
+            document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).style.display = 'block';
+            btn.classList.add('active');
+        }
+
+        function renderApp() {
+            // التعاريف
+            const dCont = document.getElementById('defs-container');
+            definitionsData.forEach(d => {
+                dCont.innerHTML += `<div class="def-item"><div class="def-term">${d.term}</div><div class="def-desc">${d.desc}</div></div>`;
+            });
+
+            // التعاليل
+            const rCont = document.getElementById('reasons-container');
+            reasonsData.forEach((r, i) => {
+                rCont.innerHTML += `
+                    <div class="reason-item">
+                        <div class="reason-q">${i+1}. ${r.q}</div>
+                        <button class="btn-show" onclick="this.nextElementSibling.style.display='block'; this.style.display='none'">إظهار الجواب</button>
+                        <div class="reason-a">${r.a}</div>
+                    </div>
+                `;
+            });
+
+            // الفراغات
+            const bCont = document.getElementById('blanks-container');
+            blanksData.forEach((b, i) => {
+                let text = b.q.replace("______", `<input type="text" class="blank-input" onchange="checkBlank(this, '${b.a}')">`);
+                bCont.innerHTML += `<div class="blank-item">${i+1}. ${text}</div>`;
+            });
+
+            // المسائل
+            const pCont = document.getElementById('problems-container');
+            problemsData.forEach((p, i) => {
+                pCont.innerHTML += `
+                    <div class="problem-item">
+                        <div class="problem-title">${p.title}</div>
+                        <div class="problem-q">${p.q}</div>
+                        <button class="btn-show" onclick="this.nextElementSibling.style.display='block'; this.style.display='none'">إظهار الحل</button>
+                        <div class="problem-a">${p.a}</div>
+                    </div>
+                `;
+            });
+
+            // الامتحان
+            const eCont = document.getElementById('exam-container');
+            examData.forEach((item, i) => {
+                let opts = '';
+                item.options.forEach((opt, j) => {
+                    opts += `<div class="option" onclick="selectOption(this, ${i}, ${j})">${opt}</div>`;
+                });
+                eCont.innerHTML += `
+                    <div class="question" id="q-${i}">
+                        <div class="q-text">${item.q}</div>
+                        ${opts}
+                    </div>
+                `;
+            });
+            
+            document.getElementById('score-display').innerText = `0/${examData.length}`;
+        }
+
+        function checkBlank(el, answer) {
+            let val = el.value.trim().replace(/\s+/g, ' '); 
+            if (val === answer) {
+                el.classList.add('correct');
+                el.classList.remove('wrong');
+                el.disabled = true;
+            } else {
+                el.classList.add('wrong');
+                el.classList.remove('correct');
+            }
+        }
+
+        let userAnswers = {};
+
+        function selectOption(el, qIndex, optIndex) {
+            const parent = el.parentElement;
+            Array.from(parent.querySelectorAll('.option')).forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            userAnswers[qIndex] = optIndex;
+        }
+
+        function submitExam() {
+            let score = 0;
+            
+            examData.forEach((item, i) => {
+                const qDiv = document.getElementById(`q-${i}`);
+                const options = qDiv.querySelectorAll('.option');
+                const userAns = userAnswers[i];
+                const correctAns = item.a;
+
+                options.forEach(o => o.classList.remove('selected'));
+
+                if (userAns === correctAns) {
+                    score++;
+                    options[userAns].classList.add('correct');
+                } else {
+                    if(userAns !== undefined) options[userAns].classList.add('wrong');
+                    options[correctAns].classList.add('correct');
+                }
+            });
+
+            const resBox = document.getElementById('exam-result');
+            resBox.style.display = 'block';
+            document.getElementById('score-display').innerText = `${score}/${examData.length}`;
+            
+            const msg = document.getElementById('result-msg');
+            let percentage = (score / examData.length) * 100;
+            
+            if (percentage >= 80) {
+                msg.innerText = "ممتاز جداً! أنت جاهز للامتحان.";
+                msg.style.color = "var(--success)";
+            } else if (percentage >= 50) {
+                msg.innerText = "جيد، راجع التعاليل والمسائل مرة أخرى.";
+                msg.style.color = "var(--accent)";
+            } else {
+                msg.innerText = "يحتاج إلى مراجعة شاملة، ابدأ بالفراغات والتعاريف.";
+                msg.style.color = "var(--danger)";
+            }
+
+            resBox.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        window.onload = renderApp;
+    </script>
+</body>
+</html>
+
+احفضلي هذا لكود يمك اريد تعديلات بسيطه عليه
